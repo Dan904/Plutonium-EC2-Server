@@ -4,11 +4,10 @@
               regexp='Nginx [Bb]ox'
               line="                      Nginx Box {{version}}"
 #- name: Change Version Tag to {{version}}
-#      become: false
-#      ec2_tag:
-#        resource: "{{ec2_id}}"
-#        region: "{{ec2_region}}"
-#        state: present
-#        tags:
-#          Version: "{{version}}"
+#  ec2_tag:
+#    resource: "{{ec2_id}}"
+#    region: "{{ec2_region}}"
+#    state: present
+#    tags:
+#      Version: "{{version}}"
 #
