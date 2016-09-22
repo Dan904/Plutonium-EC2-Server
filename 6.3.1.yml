@@ -8,7 +8,6 @@
     - name: upgrade all packages
       yum: name=* state=latest
   
-    
     - name: create directory
       file: path=/etc/pki/nginx state=directory
     - name: create dhparam file  
@@ -16,18 +15,39 @@
 
     - name: run dhparam command
       command: openssl dhparam -out /etc/pki/nginx/dhparams.pem 2048
-
-    - name: change MOTD to {{version}}
-      lineinfile: dest=/etc/update-motd.d/30-banner
-                  regexp='Nginx [Bb]ox' 
-                  line="                      Nginx Box {{version}}"
-      
+     
     - name: copy old nginx.conf file
       command: mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.{{currentVersion}}
     - name: grab nginx.conf template
-      template: src=templates/nginx.conf.j2 dest=/home/ec2-user/nginx.conf    
+      template: src=templates/6.3.1.nginx.conf.j2 
+                dest=/etc/nginx/nginx.conf    
+      notify: "restart nginx"
 
     - name: Fix permissions for phpMyAdmin
       file: path=/var/lib/php/5.6/session
             owner=nginx
             group=nginx
+      notify: "restart php"
+
+      #Version numbers change
+    - name: change MOTD to {{version}}
+      lineinfile: dest=/etc/update-motd.d/30-banner
+                  regexp='Nginx [Bb]ox' 
+                  line="                      Nginx Box {{version}}"
+    - name: Change Version Tag to {{version}}
+      ec2_tag:
+        resource: "{{ec2_id}}"
+        tags:
+          Version: "{{version}}"
+
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+
+    - name: restart mysqld
+      service: name=mysqld state=restarted
+
+    - name: restart php
+      service: name=php-fpm-5.6 state=restarted
+
