@@ -2,7 +2,7 @@
 - hosts: tag_Version_6_3
   become: true
   vars:
-    current-version: 6.3
+    currentVersion: 6.3
     version: 6.3.1
   tasks:
     - name: upgrade all packages
@@ -19,12 +19,11 @@
 
     - name: change MOTD to {{version}}
       lineinfile: dest=/etc/update-motd.d/30-banner
-                  regexp='/Nginx [Bb]ox /g' 
-                  line= 'Nginx Box {{version}}'
-                  state=present
+                  regexp='Nginx [Bb]ox' 
+                  line="                      Nginx Box {{version}}"
       
     - name: copy old nginx.conf file
-      command: mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.{{current-version}}
+      command: mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.{{currentVersion}}
     - name: grab nginx.conf template
       template: src=templates/nginx.conf.j2 dest=/home/ec2-user/nginx.conf    
 
