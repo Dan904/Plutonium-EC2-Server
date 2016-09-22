@@ -1,0 +1,34 @@
+---
+- hosts: tag_Version_6_3
+  become: true
+  vars:
+    current-version: 6.3
+    version: 6.3.1
+  tasks:
+    - name: upgrade all packages
+      yum: name=* state=latest
+  
+    
+    - name: create directory
+      file: path=/etc/pki/nginx state=directory
+    - name: create dhparam file  
+      file: path=/ect/pki/nginx/dhparams.pem state=touch 
+
+    - name: run dhparam command
+      command: openssl dhparam -out /etc/pki/nginx/dhparams.pem 2048
+
+    - name: change MOTD to {{version}}
+      lineinfile: dest=/etc/update-motd.d/30-banner
+                  regexp='/Nginx [Bb]ox /g' 
+                  line= 'Nginx Box {{version}}'
+                  state=present
+      
+    - name: copy old nginx.conf file
+      command: mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.{{current-version}}
+    - name: grab nginx.conf template
+      template: src=templates/nginx.conf.j2 dest=/home/ec2-user/nginx.conf    
+
+    - name: Fix permissions for phpMyAdmin
+      file: path=/var/lib/php/5.6/session
+            owner=nginx
+            group=nginx
