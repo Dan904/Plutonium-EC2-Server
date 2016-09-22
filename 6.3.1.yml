@@ -9,9 +9,9 @@
       yum: name=* state=latest
   
     - name: create directory
-      file: path=/etc/pki/nginx state=directory
+      file: path=/etc/pki/nginx state=directory mode=0755
     - name: create dhparam file  
-      file: path=/ect/pki/nginx/dhparams.pem state=touch 
+      file: path=/etc/pki/nginx/dhparams.pem state=touch owner=root group=root mode=0644 
 
     - name: run dhparam command
       command: openssl dhparam -out /etc/pki/nginx/dhparams.pem 2048
@@ -34,13 +34,15 @@
       lineinfile: dest=/etc/update-motd.d/30-banner
                   regexp='Nginx [Bb]ox' 
                   line="                      Nginx Box {{version}}"
-    - name: Change Version Tag to {{version}}
-      ec2_tag:
-        resource: "{{ec2_id}}"
-        tags:
-          Version: "{{version}}"
-
-
+#    - name: Change Version Tag to {{version}}
+#      become: false
+#      ec2_tag:
+#        resource: "{{ec2_id}}"
+#        region: "{{ec2_region}}"
+#        state: present
+#        tags:
+#          Version: "{{version}}"
+#
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
