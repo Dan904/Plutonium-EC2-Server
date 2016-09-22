@@ -29,20 +29,10 @@
             group=nginx
       notify: "restart php"
 
-      #Version numbers change
-    - name: change MOTD to {{version}}
-      lineinfile: dest=/etc/update-motd.d/30-banner
-                  regexp='Nginx [Bb]ox' 
-                  line="                      Nginx Box {{version}}"
-#    - name: Change Version Tag to {{version}}
-#      become: false
-#      ec2_tag:
-#        resource: "{{ec2_id}}"
-#        region: "{{ec2_region}}"
-#        state: present
-#        tags:
-#          Version: "{{version}}"
-#
+
+  roles:
+    - change-version
+
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
