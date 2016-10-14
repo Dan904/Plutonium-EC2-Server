@@ -3,6 +3,10 @@
   lineinfile: dest=/etc/update-motd.d/30-banner
               regexp='Nginx [Bb]ox'
               line="                      Nginx Box {{version}}"
+  notify: update-motd
+
+
+
 #- name: Change Version Tag to {{version}}
 #  ec2_tag:
 #    resource: "{{ec2_id}}"

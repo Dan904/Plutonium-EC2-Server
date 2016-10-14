@@ -1,0 +1,3 @@
+---
+- name: update-motd
+  command: update-motd
