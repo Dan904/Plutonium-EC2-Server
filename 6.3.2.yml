@@ -16,8 +16,15 @@
       file: path=/etc/update-motd.d/75-system-update mode=0644
       notify: update-motd
 
-    - name: disable updates
+    - name: disable yum updates
       lineinfile: dest=/etc/yum.conf insertafter="deltarpm=0" line="exclude=*"
 
-      
+    - name: replace lemp script with 2.0
+      template: src=templates/lemp.sh.j2 dest=/home/ec2-user/.bin/lemp.sh
+
+    - name: add nginx and php only script
+      template: src=templates/nginxphp.sh.j2 dest=/home/ec2-user/.bin/nginxphp.sh
+
+    - name: add nginx php script to aliases
+      lineinfile: dest=/home/ec2-user/.bashrc line="alias np='./home/ec2-user/.bin/nginxphp.sh'"
 
