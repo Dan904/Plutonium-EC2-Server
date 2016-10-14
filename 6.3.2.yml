@@ -8,8 +8,13 @@
   roles:
     - change-version
   tasks:
-    - name: remove x from motd messsages about updates
+    - name: remove x from updates in motd
       file: path=/etc/update-motd.d/70-available-updates mode=0644
+      notify: update-motd
+
+    - name: remove x from system updates in motd  
       file: path=/etc/update-motd.d/75-system-update mode=0644
+      notify: update-motd
+
 
 
