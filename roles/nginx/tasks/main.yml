@@ -1,0 +1,16 @@
+---
+
+- stat: path=/etc/nginx/nginx.conf.{{currentVersion}}
+  register: nx
+
+- name: copy old nginx.conf file
+  command: mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.{{currentVersion}}
+  when: nx.stat.exists == False
+
+- stat: path=/etc/nginx/nginx.conf
+  register: nxc
+
+- name: grab nginx.conf template
+  template: src=templates/6.3.2.nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  notify: "restart nginx"
+  when: nxc.stat.exists == False
