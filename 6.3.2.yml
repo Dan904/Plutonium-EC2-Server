@@ -16,5 +16,8 @@
       file: path=/etc/update-motd.d/75-system-update mode=0644
       notify: update-motd
 
+    - name: disable updates
+      lineinfile: dest=/etc/yum.conf insertafter="deltarpm=0" line="exclude=*"
 
+      
 
