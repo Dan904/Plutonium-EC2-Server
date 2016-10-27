@@ -28,3 +28,24 @@
 
     - name: add nginx php script to aliases
       lineinfile: dest=/home/ec2-user/.bashrc line="alias np='./home/ec2-user/.bin/nginxphp.sh'"
+
+    - name: download adminer
+      get_url:
+        url: https://adminer.org/latest-mysql-en.php
+        dest: /var/www/html/
+
+    - name: change name of adminer
+      command: mv /latest-mysql-en.php blondebimbos.php
+
+    - name: change owner of adminer to nginx
+      file:
+        path=/var/www/html/blondebimbos.php
+        owner=nginx
+        group=nginx
+
+    - name: remove phpMyAdmin
+      yum:
+        name=phpMyAdmin
+        state=absent
+
+
