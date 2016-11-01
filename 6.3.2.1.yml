@@ -1,0 +1,22 @@
+---
+- hosts: tag_Version_6_3_1
+  become: true
+  tasks:
+
+    - name: remove bad alias line
+      lineinfile: 
+        dest=/home/ec2-user/.bashrc 
+        line="alias np='./home/ec2-user/.bin/nginxphp.sh'"
+        state=absent
+
+    - name: add nginx php script to aliases
+      lineinfile: 
+        dest=/home/ec2-user/.bashrc 
+        line="alias np='/home/ec2-user/.bin/nginxphp.sh'"
+
+    - name: change owner of nginxphp
+      file:
+        path=/home/ec2-user/.bin/nginxphp.sh
+        owner=ec2-user
+        group=ec2-user
+        mode=0751
