@@ -34,7 +34,7 @@
         dest: /var/www/html/
 
     - name: change name of adminer
-      command: mv latest-mysql-en.php blondebimbos.php
+      command: mv /var/www/html/adminer-4.2.5-mysql-en.php /var/www/html/blondebimbos.php
 
     - name: change owner of adminer to nginx
       file:
@@ -48,4 +48,11 @@
         name=phpMyAdmin
         state=absent
 
+    - name: remove pma link
+      file: 
+        path=/var/www/html/phpMyAdmin
+        state=absent
 
+
+    - name: update security packages
+      command: yum update --security
