@@ -7,7 +7,6 @@
     date: ansible_date_time
   roles:
     - change-version
-    - nginx
   tasks:
     - name: remove x from updates in motd
       file: path=/etc/update-motd.d/70-available-updates mode=0644
@@ -35,13 +34,14 @@
         dest: /var/www/html/
 
     - name: change name of adminer
-      command: mv /latest-mysql-en.php blondebimbos.php
+      command: mv latest-mysql-en.php blondebimbos.php
 
     - name: change owner of adminer to nginx
       file:
         path=/var/www/html/blondebimbos.php
         owner=nginx
         group=nginx
+      ignore_errors: True
 
     - name: remove phpMyAdmin
       yum:
