@@ -6,12 +6,15 @@
   notify: update-motd
 
 
-
+#- name: get ec2 facts
+#  action: ec2_facts
+#
+#
 #- name: Change Version Tag to {{version}}
 #  ec2_tag:
-#    resource: "{{ec2_id}}"
-#    region: "{{ec2_region}}"
+#    region:  us-west-2
+#    resource: "{{ ansible_ec2_instance_id }}"
 #    state: present
 #    tags:
 #      Version: "{{version}}"
-#
+#  register: ec2_tags
