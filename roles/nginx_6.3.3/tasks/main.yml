@@ -24,6 +24,8 @@
 - name: move over wordpress template
   template: src=roles/nginx_6.3.3/templates/wordpress.conf.j2 dest=/etc/nginx/global/wordpress.conf    
 
+- name: move over fastcgi template
+  template: src=roles/nginx_6.3.3/templates/fastcgi.conf.j2 dest/etc/nginx/global/fastcgi.conf
 
 - name: create sites folder
   file: path=/etc/nginx/sites state=directory
