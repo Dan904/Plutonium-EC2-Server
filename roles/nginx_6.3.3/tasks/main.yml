@@ -22,7 +22,7 @@
   template: src=roles/nginx_6.3.3/templates/restrictions.conf.j2 dest=/etc/nginx/global/restrictions.conf
 
 - name: move over fastcgi template
-  template: src=roles/nginx_6.3.3/templates/fastcgi.conf.j2 dest/etc/nginx/global/fastcgi.conf
+  template: src=roles/nginx_6.3.3/templates/fastcgi.conf.j2 dest=/etc/nginx/global/fastcgi.conf
 
 - name: create sites folder
   file: path=/etc/nginx/sites state=directory

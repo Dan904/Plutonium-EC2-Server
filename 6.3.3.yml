@@ -1,11 +1,9 @@
 ---
-- hosts: tag_Version_6_3_1
+- hosts: tag_Version_6_3_2
   become: true
   vars:
     currentVersion: 6.3.2
     version: 6.3.3
-    date: ansible_date_time
   roles:
     - change-version
     - nginx_6.3.3
-  tasks:
