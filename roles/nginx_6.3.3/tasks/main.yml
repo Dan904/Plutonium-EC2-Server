@@ -1,0 +1,47 @@
+---
+
+- stat: path=/etc/nginx/conf.backups/nginx.conf.{{currentVersion}}
+  register: nx
+
+- name: copy old nginx.conf file
+  command: mv /etc/nginx/nginx.conf /etc/nginx/conf.backups/nginx.conf.{{currentVersion}}
+  when: nx.stat.exists == False
+
+- stat: path=/etc/nginx/nginx.conf
+  register: nxc
+
+
+- name: create conf.backups
+  file: path=/etc/nginx/conf.backups state=directory
+
+
+- name: create global folder
+  file: path=/etc/nginx/global state=directory
+
+- name: move over restrictions template
+  template: src=roles/nginx_6.3.3/templates/restrictions.conf.j2 dest=/etc/nginx/global/restrictions.conf
+
+- name: move over wordpress template
+  template: src=roles/nginx_6.3.3/templates/wordpress.conf.j2 dest=/etc/nginx/global/wordpress.conf    
+
+
+- name: create sites folder
+  file: path=/etc/nginx/sites state=directory
+
+- name: move site template into sites folder
+  template: src=roles/nginx_6.3.3/templates/site1.conf.j2 dest=/etc/nginx/sites/site1.conf
+
+- name: move site2 template into sites folder
+  template: src=roles/nginx_6.3.3/templates/site2.conf.j2 dest=/etc/nginx/sites/site2.conf.disabled 
+
+
+- name: move server.conf template
+  template: src=roles/nginx_6.3.3/templates/server.conf.j2 dest=/etc/nginx/conf.d/server.conf
+
+
+
+- name: move over nginx.conf template
+  template: src=roles/nginx_6.3.3/templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  notify: "restart nginx"
+  
+  when: nxc.stat.exists == False

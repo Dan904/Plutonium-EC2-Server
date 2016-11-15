@@ -1,0 +1,83 @@
+# Global restrictions configuration file.
+# Designed to be included in any server {} block.
+location = /favicon.ico {
+	log_not_found off;
+	access_log off;
+}
+
+if ($allowed_country = no) {
+            return 444;
+        }
+
+location = /blondebimbos.php { 
+ 		allow 76.17.118.203/32;
+		allow 75.112.3.50/32;
+		allow 68.205.8.200/32;		
+		deny all;
+
+}
+
+location = /xmlrpc.php {
+		deny all;
+		access_log off;
+		log_not_found off;
+}
+
+
+
+
+location = /robots.txt {
+	allow all;
+	log_not_found off;
+	access_log off;
+}
+
+# Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).
+# Keep logging the requests to parse later (or to pass to firewall utilities such as fail2ban)
+location ~ /\. {
+	deny all;
+}
+
+# Deny access to any files with a .php extension in the uploads directory
+# Works in sub-directory installs and also in multisite network
+# Keep logging the requests to parse later (or to pass to firewall utilities such as fail2ban)
+location ~* /(?:uploads|files)/.*\.php$ {
+	allow 76.17.118.203/32;
+	allow 75.112.3.50/32;
+	allow 68.205.8.200/32;		
+		
+	deny all;
+}
+
+location ~* /wp-content/.*.php$ {
+	allow 76.17.118.203/32;
+	allow 75.112.3.50/32;
+	allow 68.205.8.200/32;		
+	
+	deny all;
+	access_log off;
+	log_not_found off;
+}
+
+
+location ~* wp-config.php {
+	allow 76.17.118.203/32;
+	allow 75.112.3.50/32;
+	allow 68.205.8.200/32;		
+	
+	deny all;
+	access_log off;
+	log_not_found off;
+}
+
+location ~ ~$ { access_log off; log_not_found off; deny all; }
+location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+	access_log off;
+	expires max;
+	log_not_found off;
+}
+
+location ~* wp-admin/includes { deny all; }
+location ~* wp-includes/theme-compat/ { deny all; }
+location ~* wp-includes/js/tinymce/langs/.*\.php { deny all; }	
+
