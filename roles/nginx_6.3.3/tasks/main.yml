@@ -1,19 +1,23 @@
 ---
 
-- stat: path=/etc/nginx/conf.backups/nginx.conf.{{currentVersion}}
-  register: nx
-
-- name: copy old nginx.conf file
-  command: mv /etc/nginx/nginx.conf /etc/nginx/conf.backups/nginx.conf.{{currentVersion}}
-  when: nx.stat.exists == False
-
-- stat: path=/etc/nginx/nginx.conf
-  register: nxc
-
-
 - name: create conf.backups
   file: path=/etc/nginx/conf.backups state=directory
 
+- stat: path=/etc/nginx/conf.backups/nginx.conf.{{currentVersion}}
+  register: nx
+
+- name: move old nginx.conf file
+  command: mv /etc/nginx/nginx.conf /etc/nginx/conf.backups/nginx.conf.{{currentVersion}}
+  when: nx.stat.exists == False
+
+- name: move other backups to conf.backup
+  command: mv /etc/nginx/nginx.conf.* /etc/nginx/conf.backups/
+
+- name: move default confs to conf.backup
+  command: mv /etc/nginx/*.default /etc/nginx/conf.backups/
+
+- stat: path=/etc/nginx/nginx.conf
+  register: nxc
 
 - name: create global folder
   file: path=/etc/nginx/global state=directory
