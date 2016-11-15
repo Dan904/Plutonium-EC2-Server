@@ -12,9 +12,11 @@
 
 - name: move other backups to conf.backup
   command: mv /etc/nginx/nginx.conf.* /etc/nginx/conf.backups/
+  ignore_errors: yes
 
 - name: move default confs to conf.backup
   command: mv /etc/nginx/*.default /etc/nginx/conf.backups/
+  ignore_errors: yes
 
 - stat: path=/etc/nginx/nginx.conf
   register: nxc
