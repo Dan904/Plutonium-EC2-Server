@@ -1,0 +1,10 @@
+---
+
+- name: move over fastcgi template
+  template: src=roles/nginx_6.3.4/templates/fastcgi.conf.j2 dest=/etc/nginx/global/fastcgi.conf
+
+- name: remove comment from site1.conf
+  lineinfile:
+    dest=/etc/nginx/sites/site1.conf
+    line="#      include global/fastcgi.conf;"
+
