@@ -1,12 +1,12 @@
 ---
-- hosts: tag_Version_6_3_2
+- hosts: tag_Version_6_3_3
   become: true
   vars:
-    currentVersion: 6.3.2
-    version: 6.3.3
+    currentVersion: 6.3.3
+    version: 6.3.4
   roles:
     - change-version
-    - nginx_6.3.3
+    - nginx_6.3.4
 
 
     install wp-cli
