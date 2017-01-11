@@ -8,3 +8,13 @@
     dest=/etc/nginx/sites/site1.conf
     line="#      include global/fastcgi.conf;"
 
+
+    move over site.non-ssl.conf to sites with ssl =true
+    
+
+    move over site.adminer.conf
+    move blondebimbos.php /var/www
+
+    restrict bb.php better
+
+

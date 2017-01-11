@@ -7,3 +7,6 @@
   roles:
     - change-version
     - nginx_6.3.3
+
+
+    install wp-cli
