@@ -5,8 +5,14 @@
     currentVersion: 6.3.3
     version: 6.3.4
   roles:
-    - change-version
-    - nginx_6.3.4
+        - change-version
+        - nginx_6.3.4
+
+  tasks:
+    - name: install wp-cli
+      yum: name=wp-cli state=latest
+
+    - name: symlink to root 
+      file: path=/home/ec2-user/.bashrc dest=/home/root/.bashrc state=link
 
 
-    install wp-cli

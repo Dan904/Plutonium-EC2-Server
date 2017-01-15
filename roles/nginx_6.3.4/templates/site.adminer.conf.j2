@@ -2,7 +2,7 @@ server {
       listen                    *:80;
       listen                    [::]:80;
 
-      server_name               adminer.coulterdesigns.com;
+      server_name               adminer.{{ec2_tag_Domain | regex_replace('www.','')}};
       root                      /var/www;
       index                     blondebimbos.php;
 

@@ -2,7 +2,7 @@ server {
       listen			*:80;
       listen			[::]:80;
 
-      server_name  		{{ec2_tag_Domain}} *.{{ec2_tag_Domain}};
+      server_name  		{{ec2_tag_Domain}} *.{{ec2_tag_Domain | regex_replace('www.','')}};
       root         		/var/www/html;
       index 			index.php;
 

@@ -1,20 +1,63 @@
 ---
 
+
+  # Update Nginx
+
+- name: enable yum updates
+  lineinfile: 
+    dest=/etc/yum.conf 
+    state=absent 
+    line="exclude=*"
+
+- name: update nginx
+  yum:
+    name: nginx
+    state: latest
+
+- name: update security packages
+  command: yum update --security
+
+
+- name: disable yum updates
+  lineinfile: dest=/etc/yum.conf insertafter="deltarpm=0" line="exclude=*"
+
+- name: remove comment from nginx.conf geoip module load
+  lineinfile: dest=/etc/nginx/nginx.conf regexp='^#load_module "/usr/lib64/nginx/modules/ngx_http_geoip_module.so";' line='load_module "/usr/lib64/nginx/modules/ngx_http_geoip_module.so";'
+
+
+
+  # Move over extra files
+
 - name: move over fastcgi template
   template: src=roles/nginx_6.3.4/templates/fastcgi.conf.j2 dest=/etc/nginx/global/fastcgi.conf
 
-- name: remove comment from site1.conf
-  lineinfile:
-    dest=/etc/nginx/sites/site1.conf
-    line="#      include global/fastcgi.conf;"
+- name: add non-ssl conf to ssl sites
+  template: src=roles/nginx_6.3.4/templates/site.non-ssl.conf.j2 dest=/etc/nginx/sites/site.non-ssl.conf
+  when: ec2_tag_SSL == 'True'
 
 
-    move over site.non-ssl.conf to sites with ssl =true
-    
+  # New site1.conf template file with correct sub
 
-    move over site.adminer.conf
-    move blondebimbos.php /var/www
+- name: new site.conf
+  template: src=roles/nginx_6.3.4/templates/site1.conf.j2 dest=/etc/nginx/sties/site1.conf
+  when: ec2_tag_SSL == 'True'
 
-    restrict bb.php better
+- name: new site.non-ssl.conf
+  template: src=roles/nginx_6.3.4/templates/site.non-ssl.conf.j2 dest=/etc/nginx/sties/site.non-ssl.conf
+  when: ec2_tag_SSL == 'False'
 
 
+
+  #Adminer
+
+- name: move file back a dir
+  command: mv /var/www/html/blondebimbos.php /var/www/
+ 
+- name: move over site.adminer.conf
+  template: src=roles/nginx_6.3.4/templates/site.adminer.conf.j2 dest=/etc/nginx/sites/site.adminer.conf
+
+- name: add adminer line to nginx.conf
+  lineinfile: dest=/etc/nginx/nginx.conf insertafter="include /etc/nginx/sites/site1.conf;" line="include /etc/nginx/sites/site.adminer.conf;"
+  notify: "restart nginx"  
+
+ 
