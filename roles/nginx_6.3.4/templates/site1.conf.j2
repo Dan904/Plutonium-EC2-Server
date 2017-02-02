@@ -1,8 +1,8 @@
 server {
       listen			*:80;
       listen			[::]:80;
-      listen			*:443 ssl;
-      listen			[::]:443 ssl;
+      listen			*:443 ssl http2;
+      listen			[::]:443 ssl http2;
 
       server_name  		{{ec2_tag_Domain}} *.{{ec2_tag_Domain | regex_replace('www.','')}};
       root         		/var/www/html;
