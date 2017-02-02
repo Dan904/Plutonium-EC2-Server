@@ -10,7 +10,7 @@
         - wp-cli_6.3.4
   tasks:
     - name: add new get_wp.sh
-      template: src=templates/get_wp.sh.j2 dest=/var/www/html/get_wp.sh owner=ec2-user group=ec2-user mode=755
+      template: src=templates/get_wp.sh.j2 dest=/home/ec2-user/get_wp.sh owner=ec2-user group=ec2-user mode=755
     
     - name: remove adminer
       file: path=/var/www/html/blondebimbos.php state=absent
