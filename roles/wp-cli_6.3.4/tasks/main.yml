@@ -1,0 +1,10 @@
+---
+
+- name: install wp-cli
+  command: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+- name: chmod
+  command: chmod +x wp-cli.phar
+
+- name: move 
+  command: mv wp-cli.phar /usr/local/bin/wp
