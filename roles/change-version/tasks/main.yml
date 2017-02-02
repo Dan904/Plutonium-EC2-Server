@@ -5,11 +5,6 @@
               line="                      Nginx Box {{version}}"
   notify: update-motd
 
-- name: change  ec2 tag to {{version}}
-  ec2_tag:
-    tags:
-      Version == {{version}}
-  register: ec2_tags}
 
 
 #- name: get ec2 facts

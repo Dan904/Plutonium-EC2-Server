@@ -15,7 +15,7 @@
     state: latest
 
 - name: update security packages
-  command: yum update --security
+  command: yum update -y --security
 
 
 - name: disable yum updates
@@ -32,32 +32,31 @@
   template: src=roles/nginx_6.3.4/templates/fastcgi.conf.j2 dest=/etc/nginx/global/fastcgi.conf
 
 - name: add non-ssl conf to ssl sites
-  template: src=roles/nginx_6.3.4/templates/site.non-ssl.conf.j2 dest=/etc/nginx/sites/site.non-ssl.conf
-  when: ec2_tag_SSL == 'True'
+  template: src=roles/nginx_6.3.4/templates/site.non-ssl.conf.j2 dest=/etc/nginx/sites/site.non-ssl.conf.disabled
+  when: ec2_tag_SSL == 'True' or  ec2_tag_SSL == 'Redirect'
+
+
+- name: add non-ssl redirect conf to ssl sites
+  template: src=roles/nginx_6.3.4/templates/site.non-ssl.redirect.conf.j2 dest=/etc/nginx/sites/site.non-ssl.redirect.conf.disabled
+  when: ec2_tag_SSL == 'True' or  ec2_tag_SSL == 'False'
+
 
 
   # New site1.conf template file with correct sub
 
 - name: new site.conf
-  template: src=roles/nginx_6.3.4/templates/site1.conf.j2 dest=/etc/nginx/sties/site1.conf
+  template: src=roles/nginx_6.3.4/templates/site1.conf.j2 dest=/etc/nginx/sites/site1.conf
   when: ec2_tag_SSL == 'True'
 
 - name: new site.non-ssl.conf
-  template: src=roles/nginx_6.3.4/templates/site.non-ssl.conf.j2 dest=/etc/nginx/sties/site.non-ssl.conf
+  template: src=roles/nginx_6.3.4/templates/site.non-ssl.conf.j2 dest=/etc/nginx/sites/site.non-ssl.conf
   when: ec2_tag_SSL == 'False'
 
+- name: new site.non-ssl.redirect.conf
+  template: src=roles/nginx_6.3.4/templates/site.non-ssl.redirect.conf.j2 dest=/etc/nginx/sites/site.non-ssl.redirect.conf
+  when: ec2_tag_SSL == 'Redirect'
 
 
-  #Adminer
 
-- name: move file back a dir
-  command: mv /var/www/html/blondebimbos.php /var/www/
- 
-- name: move over site.adminer.conf
-  template: src=roles/nginx_6.3.4/templates/site.adminer.conf.j2 dest=/etc/nginx/sites/site.adminer.conf
-
-- name: add adminer line to nginx.conf
-  lineinfile: dest=/etc/nginx/nginx.conf insertafter="include /etc/nginx/sites/site1.conf;" line="include /etc/nginx/sites/site.adminer.conf;"
-  notify: "restart nginx"  
 
  

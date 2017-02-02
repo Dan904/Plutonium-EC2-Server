@@ -7,12 +7,12 @@
   roles:
         - change-version
         - nginx_6.3.4
-
+        - wp-cli_6.3.4
   tasks:
-    - name: install wp-cli
-      yum: name=wp-cli state=latest
-
-    - name: symlink to root 
-      file: path=/home/ec2-user/.bashrc dest=/home/root/.bashrc state=link
+    - name: add new get_wp.sh
+      template: src=templates/get_wp.sh.j2 dest=/var/www/html/get_wp.sh owner=ec2-user group=ec2-user mode=755
+    
+    - name: remove adminer
+      file: path=/var/www/html/blondebimbos.php state=absent
 
 
