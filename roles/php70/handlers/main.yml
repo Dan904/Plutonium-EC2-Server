@@ -1,0 +1,8 @@
+---
+
+- name: restart php7
+  service: name=php-fpm-7.0 state=restarted
+  notify: restart nginx
+
+- name: restart nginx
+  service: name=nginx state=restarted

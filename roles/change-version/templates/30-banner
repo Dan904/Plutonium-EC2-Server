@@ -1,0 +1,17 @@
+#!/bin/sh
+clear
+cat << 'EOF'
+
+
+
+         _ \ |        |               _)
+         __/ |  |  |   _|   _ \    \   |  |  |   ` \
+        _|  _| \_,_| \__| \___/ _| _| _| \_,_| _|_|_|
+
+                      Nginx Box {{version}}
+
+        {{ ec2_tag_Domain}}  /  {{ec2_IPv4_Public_IP }}
+
+
+
+EOF

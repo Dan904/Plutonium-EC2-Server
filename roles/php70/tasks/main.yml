@@ -1,0 +1,56 @@
+---
+
+- name: disable yum updates
+  lineinfile: dest=/etc/yum.conf insertafter="deltarpm=0" line="exclude=*"
+
+- name: yum update and upgrade
+  yum: name='*' state=latest
+
+  #- name: purge php5.6
+  #  yum: name='php5*' state=absent
+
+- name: 
+  yum: name={{item}} state=latest
+  with_items:
+    - php70
+    - php70-fpm
+    - php70-imap
+    - php70-mbstring
+    - php70-mysqlnd
+    - php70-opcache
+    - php70-pdo
+    - php70-pecl-apcu
+    - php70-bcmath
+    - php70-devel
+    - php70-gmp
+    - php70-intl
+    - php70-mcrypt
+    - php70-pecl-imagick
+    - php70-gd
+    - php70-pecl-jsond-devel
+    - php70-common
+    - php70-cli
+    - php70-php
+    - php70-xml
+    - php70-pecl-apcu
+    - php70-pecl-jsond
+    - php70-process
+
+- name: set 7.0 default
+  command: alternatives --set php /usr/bin/php-7.0
+
+- name: turn off 5.6 on boot
+  service: name=php-fpm-5.6 enabled=off
+
+- name: turn on 7.0 on boot
+  service: name=php-fpm-7.0 enabled=on
+
+- name: move over nginx file
+  template: src=templates/php-fpm.conf-7.0.j2 dest=/etc/nginx/conf.d/php-fpm.conf-7.0
+
+- name: move over php.ini
+  template: src=templates/php-7.0.ini.j2 dest=/etc/php-fpm-7.0.ini
+
+- name: move over www.conf
+  template: src=templates/www.conf.j2 dest=/etc/php-fpm-7.0.d/www.conf
+  notify: restart php7

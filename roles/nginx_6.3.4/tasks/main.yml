@@ -16,7 +16,7 @@
 
 - name: update security packages
   command: yum update -y --security
-
+  ignore_errors: yes
 
 - name: disable yum updates
   lineinfile: dest=/etc/yum.conf insertafter="deltarpm=0" line="exclude=*"
