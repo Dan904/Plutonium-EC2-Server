@@ -1,5 +1,5 @@
 ---
-- hosts: tag_Name_BMG
+- hosts: tag_Version_6_3_4
   become: true
   vars:
     currentVersion: 6.3.4
