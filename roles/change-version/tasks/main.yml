@@ -1,9 +1,22 @@
 ---
-- name: change MOTD to {{version}}
-  lineinfile: dest=/etc/update-motd.d/30-banner
-              regexp='Nginx [Bb]ox'
-              line="                      Nginx Box {{version}}"
-  notify: update-motd
+#- name: change MOTD to {{version}}
+#  lineinfile: dest=/etc/update-motd.d/30-banner
+#              regexp='Nginx [Bb]ox'
+#              line="                      Nginx Box {{version}}"
+#  notify: update-motd
+
+- name: replace 30-banner
+  template: src=roles/change-version/templates/30-banner.j2 dest=/etc/update-motd.d/30-banner
+
+
+- name: Remove 75-system-update
+  file: path=/etc/update-motd.d/75-system-update state=absent
+  ignore_errors: yes
+
+- name: Remove 70-available-updates
+  file: path=/etc/update-motd.d/70-available-updates state=absent
+  ignore_errors: yes
+
 
 
 

@@ -1,13 +1,22 @@
 ---
-- hosts: tag_Version_6_3_4
+- hosts: tag_Name_BMG
   become: true
   vars:
     currentVersion: 6.3.4
     version: 6.4
   roles:
-    - change-version
     - php70
+    - change-version
   tasks:
-    
+    - name: move over new lemp script
+      copy: src=templates/lemp.sh.j2 dest=/home/ec2-user/.bin/lemp.sh
 
+    - name: move over adminer script
+      copy: src=templates/ad-down.sh dest=/home/ec2-user/ad-down.sh owner=ec2-user group=ec2-user mode=0755
+
+    - name: fix adminer issue
+      file: path=/var/lib/php/ owner=nginx group=nginx
+
+    - name: fix /var/www/html
+      file: path=/var/www/html owner=nginx group=nginx
 
