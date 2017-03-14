@@ -2,4 +2,4 @@
 
 cd /var/www/html
 
-wget https://www.adminer.org/latest-mysql-en.php
+wget https://www.adminer.org/latest-mysql-en.php -O adminer.php
