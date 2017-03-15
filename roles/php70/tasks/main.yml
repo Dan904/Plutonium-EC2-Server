@@ -54,7 +54,7 @@
   copy: src=templates/php-fpm.conf-7.0 dest=/etc/nginx/conf.d/php-fpm.conf-7.0
 
 - name: move over php.ini
-  copy: src=templates/php-7.0.ini dest=/etc/php-fpm-7.0.ini
+  copy: src=templates/php-7.0.ini dest=/etc/php-7.0.ini
 
 - name: move over www.conf
   copy: src=templates/www.conf dest=/etc/php-fpm-7.0.d/www.conf
