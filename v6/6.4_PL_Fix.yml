@@ -1,0 +1,10 @@
+---
+- hosts: tag_Version_6_4
+  become: true
+  vars:
+    currentVersion: 6.4
+    version: 6.4
+  roles:
+    - php70
+  tasks:
+

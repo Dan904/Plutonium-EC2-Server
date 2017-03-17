@@ -16,7 +16,7 @@
 - name: Remove 70-available-updates
   file: path=/etc/update-motd.d/70-available-updates state=absent
   ignore_errors: yes
-
+  notify: update-motd
 
 
 
