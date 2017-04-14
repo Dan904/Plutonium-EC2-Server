@@ -1,5 +1,5 @@
 ---
-- hosts: tag_Client_Tight_Line_Productions
+- hosts: tag_Client_Melbourne_Food_and_Wine_Festival
   become: true
   vars:
     currentVersion: 6.3.4
