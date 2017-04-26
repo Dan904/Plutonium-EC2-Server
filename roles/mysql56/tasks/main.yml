@@ -1,0 +1,39 @@
+---
+
+- name: enable yum updates
+  lineinfile:
+    dest=/etc/yum.conf
+    state=absent
+    line="exclude=*"
+
+- name: yum update and upgrade
+  yum: name='*' state=latest
+  ignore_errors: yes
+
+- name: stop mysql
+  service: name=mysql state=stopped
+
+- name: remove mysql55
+  yum: name={{item}} state=absent
+  with_items:
+    - mysql55
+    - mysql55-libs
+
+- name: install mysql56
+  yum: name={{item}} state=installed
+  with_items:
+    mysql56
+    mysql56-devel
+    mysql56-server
+
+- name: start mysql
+  service: name=mysql state=started
+
+- name: upgrade
+  command: mysql_upgrade --password={{mysqlpass}}
+  notify: restart mysql
+
+- name: disable yum updates
+  lineinfile: dest=/etc/yum.conf insertafter="deltarpm=0" line="exclude=*"
+
+
