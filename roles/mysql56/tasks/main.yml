@@ -11,7 +11,7 @@
   ignore_errors: yes
 
 - name: stop mysql
-  service: name=mysql state=stopped
+  service: name=mysqld state=stopped
 
 - name: remove mysql55
   yum: name={{item}} state=absent
@@ -25,9 +25,10 @@
     mysql56
     mysql56-devel
     mysql56-server
+  ignore_errors: yes
 
 - name: start mysql
-  service: name=mysql state=started
+  service: name=mysqld state=started
 
 - name: upgrade
   command: mysql_upgrade --password={{mysqlpass}}
