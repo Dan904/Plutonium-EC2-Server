@@ -26,6 +26,10 @@
     - mysql56
     - mysql56-devel
     - mysql56-server
+  ignore_errors: yes
+
+- name: add default my.cnf
+  template: src=templates/my.cnf.j2 dest=/etc/my.cnf
 
 - name: start mysql
   service: name=mysqld state=started
