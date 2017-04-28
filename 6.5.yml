@@ -13,7 +13,7 @@
     - change-version
   tasks:
     - name: move over new np script
-      copy: src=templates/ngninxphp.sh.j2 dest=/home/ec2-user/.bin/nginxphp.sh
+      copy: src=templates/nginxphp.sh.j2 dest=/home/ec2-user/.bin/nginxphp.sh
     
     - name: move over adminer script
       copy: src=templates/ad-down.sh dest=/home/ec2-user/.bin/ad-down.sh owner=ec2-user group=ec2-user mode=0755    

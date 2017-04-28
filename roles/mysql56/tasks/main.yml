@@ -12,6 +12,7 @@
 
 - name: stop mysql
   service: name=mysqld state=stopped
+  ignore_errors: yes
 
 - name: remove mysql55
   yum: name={{item}} state=absent
@@ -20,19 +21,19 @@
     - mysql55-libs
 
 - name: install mysql56
-  yum: name={{item}} state=installed
+  yum: name={{item}} state=latest
   with_items:
-    mysql56
-    mysql56-devel
-    mysql56-server
-  ignore_errors: yes
+    - mysql56
+    - mysql56-devel
+    - mysql56-server
 
 - name: start mysql
   service: name=mysqld state=started
 
 - name: upgrade
   command: mysql_upgrade --password={{mysqlpass}}
-  notify: restart mysql
+  notify: mysql restart
+  ignore_errors: yes
 
 - name: disable yum updates
   lineinfile: dest=/etc/yum.conf insertafter="deltarpm=0" line="exclude=*"
